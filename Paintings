@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+struct Figure
+{
+    std::string fill;
+};
+
+struct Path : Figure
+{
+    std::string d;
+};
+
+std::ostream& operator<<(std::ostream& os, const Path& p)
+{
+    return os << "<path d=\"" << p.d << "\" fill=\"" << p.fill << "\"></path>\n";
+}
+
+void drawCircle(ofstream& os, int cx, int cy, int r, const std::string& fill)
+{
+    os << "<circle cx=\"" << cx << "\" cy=\"" << cy << "\" r=\"" << r << "\" fill=\"" << fill << "\"/>\n";
+}
+
+int main()
+{
+    ofstream os("img.svg");
+    os << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"400\" viewBox=\"0 0 124 124\" fill=\"none\">\n";
+
+    Path path;
+    path.fill = "GREEN";
+    path.d = "M 1 18 L 45 1 L 50 18";
+    os << path;
+
+    drawCircle(os, 25, 25, 12, path.fill);
+
+    path.fill = "BLACK";
+    path.d = "M 5 18 L 60 21 L 55 27";
+    os << path;
+
+    path.fill = "YELLOW";
+    path.d = "M 70 1 L 71 1 L 30 200";
+    os << path;
+
+    path.fill = "ORANGE";
+    path.d = "M 21 55 L 75 30 L 80 60";
+    os << path;
+
+    path.fill = "BLACK";
+    path.d = "M 90 30 L 100 32 L 80 200 L 70 200";
+    os << path;
+
+    path.fill = "BLACK";
+    path.d = "M 103 20 L 110 21 L 90 200 L 83 200";
+    os << path;
+
+    os << "</svg>";
+}
